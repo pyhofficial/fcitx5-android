@@ -97,7 +97,10 @@ class NavigationBarManager {
         }
         if (shouldUpdateNavbarBackground) {
             window.setNavbarBackgroundColor(
-                if (!keyBorder && theme is Theme.Builtin) theme.keyboardColor else theme.backgroundColor
+                when (theme) {
+                    is Theme.Builtin -> if (keyBorder) theme.backgroundColor else theme.keyboardColor
+                    is Theme.Custom -> theme.backgroundColor
+                }
             )
         }
     }

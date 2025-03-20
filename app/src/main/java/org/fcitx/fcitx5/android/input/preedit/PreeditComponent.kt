@@ -27,8 +27,10 @@ class PreeditComponent : UniqueComponent<PreeditComponent>(), Dependent, InputBr
 
     val ui by lazy {
         val keyBorder = ThemeManager.prefs.keyBorder.getValue()
-        val bkgColor =
-            if (!keyBorder && theme is Theme.Builtin) theme.barColor else theme.backgroundColor
+        val bkgColor = when (theme) {
+            is Theme.Builtin -> if (keyBorder) theme.backgroundColor else theme.barColor
+            is Theme.Custom -> theme.backgroundColor
+        }
         PreeditUi(context, theme, setupTextView = {
             backgroundColor = bkgColor
             horizontalPadding = dp(8)
